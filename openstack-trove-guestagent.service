@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenStack Trove guestagent Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=trove
+ExecStart=/usr/bin/trove-guestagent --config-file /usr/share/trove/trove-dist.conf --config-file /etc/trove/trove-guestagent.conf --config-file /etc/guest_info
+
+[Install]
+WantedBy=multi-user.target
+

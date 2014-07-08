@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenStack Trove Conductor Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=trove
+ExecStart=/usr/bin/trove-conductor
+
+[Install]
+WantedBy=multi-user.target
+

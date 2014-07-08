@@ -1,0 +1,55 @@
+From 2115b5d2b4d81b9de0e603ea61cdd547142ab84e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?P=C3=A1draig=20Brady?= <P@draigBrady.com>
+Date: Mon, 14 Apr 2014 15:15:39 +0100
+Subject: [PATCH] adjust db config
+
+remove conductor and taskmanager specific db connection config
+
+adjust default sql_connection option so that it is edited
+by the openstack-db script.
+---
+ etc/trove/trove-conductor.conf.sample   |    1 -
+ etc/trove/trove-taskmanager.conf.sample |    3 +--
+ etc/trove/trove.conf.sample             |    2 +-
+ 3 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/etc/trove/trove-conductor.conf.sample b/etc/trove/trove-conductor.conf.sample
+index 31483d0..72e84f2 100644
+--- a/etc/trove/trove-conductor.conf.sample
++++ b/etc/trove/trove-conductor.conf.sample
+@@ -3,5 +3,4 @@ verbose = True
+ debug = True
+ control_exchange = trove
+ trove_auth_url = http://0.0.0.0:5000/v2.0
+-sql_connection = mysql://root:e1a2c042c828d3566d0a@localhost/trove
+ rabbit_password = f7999d1955c5014aa32c
+diff --git a/etc/trove/trove-taskmanager.conf.sample b/etc/trove/trove-taskmanager.conf.sample
+index 2bd93f2..26d9534 100644
+--- a/etc/trove/trove-taskmanager.conf.sample
++++ b/etc/trove/trove-taskmanager.conf.sample
+@@ -14,8 +14,7 @@ rabbit_password=f7999d1955c5014aa32c
+ # SQLAlchemy connection string for the reference implementation
+ # registry server. Any valid SQLAlchemy connection string is fine.
+ # See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
+-sql_connection = mysql://root:e1a2c042c828d3566d0a@localhost/trove
+-# sql_connection = mysql://root:root@localhost/trove
++# sql_connection = mysql://trove:trove@localhost/trove
+ 
+ # Period in seconds after which SQLAlchemy should reestablish its connection
+ # to the database.
+diff --git a/etc/trove/trove.conf.sample b/etc/trove/trove.conf.sample
+index af9589a..35cb7e5 100644
+--- a/etc/trove/trove.conf.sample
++++ b/etc/trove/trove.conf.sample
+@@ -21,7 +21,7 @@ rabbit_password=f7999d1955c5014aa32c
+ # registry server. Any valid SQLAlchemy connection string is fine.
+ # See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
+ # sql_connection = sqlite:///trove_test.sqlite
+-sql_connection = mysql://root:e1a2c042c828d3566d0a@localhost/trove
++#sql_connection = mysql://trove:trovea@localhost/trove
+ #sql_connection = postgresql://trove:trove@localhost/trove
+ 
+ # Period in seconds after which SQLAlchemy should reestablish its connection
+-- 
+1.7.7.6
+

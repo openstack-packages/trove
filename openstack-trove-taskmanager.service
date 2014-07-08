@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenStack Trove taskmanager service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=trove
+ExecStart=/usr/bin/trove-taskmanager
+
+[Install]
+WantedBy=multi-user.target
+
