@@ -31,12 +31,6 @@ Source31:         %{name}-taskmanager.upstart
 Source32:         %{name}-conductor.upstart
 Source33:         %{name}-guestagent.upstart
 
-Patch0:           version.diff
-Patch1:           authtoken.diff
-Patch2:           db-config.diff
-
-Patch100:         el6-parallel-deps.diff
-
 #
 # patches_base=2014.2.b3
 #
@@ -206,11 +200,7 @@ This package contains documentation files for %{project}.
 %endif
 
 %prep
-%setup -q -n %{project}-%{version}
-
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%autosetup -n %{project}-%{version}.b%{milestone} -S git
 
 %if 0%{?rhel} == 6
 %patch100 -p1
