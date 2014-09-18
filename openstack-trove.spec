@@ -484,15 +484,6 @@ fi
 * Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.4.b3
 - Update to upstream 2014.2.b3
 
-* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.3.b3
-- Update to upstream 2014.2.b3
-
-* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.2.b3
-- Update to upstream 2014.2.b3
-
-* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.1.b3
-- Update to upstream 2014.2.b3
-
 * Tue Jun 24 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-6
 - Use more up to date build dependencies for systemd
 
