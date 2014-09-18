@@ -1,15 +1,17 @@
+%global release_name juno
+%global milestone 3
 %global with_doc 0
 %global project trove
 
 Name:             openstack-%{project}
-Version:          2014.1
-Release:          6%{?dist}
+Version:          2014.2
+Release:          0.4.b3%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 Group:            Applications/System
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/icehouse/%{version}/+download/%{project}-%{version}.tar.gz
+Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-%{milestone}/+download/%{project}-%{version}.b%{milestone}.tar.gz
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -36,7 +38,7 @@ Patch2:           db-config.diff
 Patch100:         el6-parallel-deps.diff
 
 #
-# patches_base=2014.1
+# patches_base=2014.2.b3
 #
 
 BuildArch:        noarch
@@ -479,6 +481,18 @@ fi
 %endif
 
 %changelog
+* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.4.b3
+- Update to upstream 2014.2.b3
+
+* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.3.b3
+- Update to upstream 2014.2.b3
+
+* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.2.b3
+- Update to upstream 2014.2.b3
+
+* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.1.b3
+- Update to upstream 2014.2.b3
+
 * Tue Jun 24 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-6
 - Use more up to date build dependencies for systemd
 
