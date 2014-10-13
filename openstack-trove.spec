@@ -1,17 +1,17 @@
 %global release_name juno
-%global milestone 3
+%global milestone rc2
 %global with_doc 0
 %global project trove
 
 Name:             openstack-%{project}
 Version:          2014.2
-Release:          0.4.b3%{?dist}
+Release:          0.5.%{milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 Group:            Applications/System
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-%{milestone}/+download/%{project}-%{version}.b%{milestone}.tar.gz
+Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-%{milestone}/+download/%{project}-%{version}.%{milestone}.tar.gz
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -32,8 +32,9 @@ Source32:         %{name}-conductor.upstart
 Source33:         %{name}-guestagent.upstart
 
 #
-# patches_base=2014.2.b3
+# patches_base=2014.2.rc2
 #
+Patch001:         0001-Remove-runtime-dep-on-python-pbr.patch
 
 BuildArch:        noarch
 BuildRequires:    intltool
@@ -200,11 +201,11 @@ This package contains documentation files for %{project}.
 %endif
 
 %prep
-%autosetup -n %{project}-%{version}.b%{milestone} -S git
+%autosetup -n %{project}-%{version}.%{milestone} -S git
 
-%if 0%{?rhel} == 6
-%patch100 -p1
-%endif
+sed -i s/REDHATTROVEVERSION/%{version}/ trove/__init__.py
+sed -i s/REDHATTROVERELEASE/%{release}/ trove/__init__.py
+
 
 # Avoid non-executable-script rpmlint while maintaining timestamps
 find %{project} -name \*.py |
@@ -224,7 +225,7 @@ sed -i 's/REDHATVERSION/%{version}/; s/REDHATRELEASE/%{release}/' %{project}/ver
 rm -rf {test-,}requirements.txt
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 
 # Programmatically update defaults in sample config
 # which is installed at /etc/trove/trove.conf
@@ -244,7 +245,7 @@ while read name eq value; do
 done < %{SOURCE1}
 
 %install
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 # docs generation requires everything to be installed first
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
@@ -471,6 +472,10 @@ fi
 %endif
 
 %changelog
+* Mon Oct 13 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.5.rc2
+- Update to upstream 2014.2.rc2
+- Add patch that remove runtime dep on pbr
+
 * Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.4.b3
 - Update to upstream 2014.2.b3
 
