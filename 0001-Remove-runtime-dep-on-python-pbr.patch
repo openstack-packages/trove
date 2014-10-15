@@ -1,4 +1,4 @@
-From d623a80b553ff4cd5d7f608d3a0bbabb0cbaab6b Mon Sep 17 00:00:00 2001
+From 0ce62149bffc82e018be0ad60f2c2343be0eb647 Mon Sep 17 00:00:00 2001
 From: Haikel Guemar <hguemar@fedoraproject.org>
 Date: Mon, 13 Oct 2014 14:59:39 +0200
 Subject: [PATCH] Remove runtime dep on python pbr
@@ -40,6 +40,3 @@ index 932f8f7..36b2e63 100644
  # We have a circular import problem when we first run python setup.py sdist
  # It's harmless, so deflect it.
  try:
--- 
-2.1.0
-

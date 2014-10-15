@@ -1,11 +1,11 @@
 %global release_name juno
-%global milestone rc2
+%global milestone rc3
 %global with_doc 0
 %global project trove
 
 Name:             openstack-%{project}
 Version:          2014.2
-Release:          0.5.%{milestone}%{?dist}
+Release:          0.6.%{milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 Group:            Applications/System
@@ -32,9 +32,9 @@ Source32:         %{name}-conductor.upstart
 Source33:         %{name}-guestagent.upstart
 
 #
-# patches_base=2014.2.rc2
+# patches_base=2014.2.rc3
 #
-Patch001:         0001-Remove-runtime-dep-on-python-pbr.patch
+Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
 
 BuildArch:        noarch
 BuildRequires:    intltool
@@ -472,6 +472,9 @@ fi
 %endif
 
 %changelog
+* Wed Oct 15 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-0.6.rc3
+- Update to upstream 2014.2.rc3
+
 * Mon Oct 13 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.5.rc2
 - Update to upstream 2014.2.rc2
 - Add patch that remove runtime dep on pbr
