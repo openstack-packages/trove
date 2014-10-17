@@ -1,17 +1,17 @@
 %global release_name juno
-%global milestone rc3
 %global with_doc 0
 %global project trove
 
 Name:             openstack-%{project}
 Version:          2014.2
-Release:          0.6.%{milestone}%{?dist}
+Release:          1%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
-Group:            Applications/System
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-%{milestone}/+download/%{project}-%{version}.%{milestone}.tar.gz
+Source0:          https://launchpad.net/%{project}/%{release_name}/%{version}/+download/%{project}-%{version}.tar.gz
+
+Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -22,34 +22,13 @@ Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
 
-Source20:         %{name}-api.init
-Source21:         %{name}-taskmanager.init
-Source22:         %{name}-conductor.init
-Source23:         %{name}-guestagent.init
-Source30:         %{name}-api.upstart
-Source31:         %{name}-taskmanager.upstart
-Source32:         %{name}-conductor.upstart
-Source33:         %{name}-guestagent.upstart
-
-#
-# patches_base=2014.2.rc3
-#
-Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
-
 BuildArch:        noarch
-BuildRequires:    intltool
-%if 0%{?rhel} == 6
-BuildRequires:    python-sphinx10
-# These are required to build due to the requirements check added
-BuildRequires:    python-paste-deploy1.5
-BuildRequires:    python-routes1.12
-BuildRequires:    python-sqlalchemy0.7
-%endif
-BuildRequires:    python-sphinx
+BuildRequires:    python2-devel
 BuildRequires:    python-setuptools
 BuildRequires:    python-pbr
 BuildRequires:    python-d2to1
-BuildRequires:    python2-devel
+BuildRequires:    python-sphinx
+BuildRequires:    intltool
 
 Requires:         %{name}-api = %{version}-%{release}
 Requires:         %{name}-taskmanager = %{version}-%{release}
@@ -61,20 +40,14 @@ OpenStack DBaaS (codename %{project}) provisioning service.
 
 %package common
 Summary:          Components common to all OpenStack %{project} services
-Group:            Applications/System
 
 Requires:         python-%{project} = %{version}-%{release}
 
-%if 0%{?rhel} == 6
-Requires(post):   chkconfig
-Requires(preun):  initscripts
-Requires(preun):  chkconfig
-%else
 Requires(post):   systemd
 Requires(preun):  systemd
 Requires(postun): systemd
 BuildRequires:    systemd
-%endif
+
 Requires(pre):    shadow-utils
 
 %description common
@@ -86,7 +59,6 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-Group:            Applications/System
 
 Requires:         %{name}-common = %{version}-%{release}
 
@@ -98,7 +70,6 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-Group:            Applications/System
 
 Requires:         %{name}-common = %{version}-%{release}
 
@@ -110,7 +81,6 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-Group:            Applications/System
 
 Requires:         %{name}-common = %{version}-%{release}
 
@@ -122,7 +92,6 @@ This package contains the %{project} conductor service.
 
 %package guestagent
 Summary:          OpenStack %{project} guest agent
-Group:            Applications/System
 %if 0%{?rhel}
 Requires:         pexpect
 %else
@@ -140,7 +109,6 @@ that runs within the database VM instance.
 
 %package -n       python-%{project}
 Summary:          Python libraries for %{project}
-Group:            Applications/System
 
 Requires:         MySQL-python
 
@@ -156,16 +124,9 @@ Requires:         python-lxml
 Requires:         python-webob >= 1.2
 Requires:         python-migrate
 
-%if 0%{?rhel} == 6
-Requires:         python-sqlalchemy0.7
-Requires:         python-paste-deploy1.5
-Requires:         python-routes1.12
-Requires:         python-argparse
-%else
 Requires:         python-sqlalchemy
 Requires:         python-paste-deploy
 Requires:         python-routes
-%endif
 
 Requires:         python-troveclient
 Requires:         python-novaclient
@@ -191,7 +152,6 @@ This package contains the %{project} python library.
 %if 0%{?with_doc}
 %package doc
 Summary:          Documentation for OpenStack %{project}
-Group:            Documentation
 
 
 %description      doc
@@ -201,7 +161,7 @@ This package contains documentation files for %{project}.
 %endif
 
 %prep
-%autosetup -n %{project}-%{version}.%{milestone} -S git
+%autosetup -n %{project}-%{version} -S git
 
 sed -i s/REDHATTROVEVERSION/%{version}/ trove/__init__.py
 sed -i s/REDHATTROVERELEASE/%{release}/ trove/__init__.py
@@ -318,60 +278,6 @@ getent passwd $USERNAME >/dev/null || \
     -c "$USERNAME Daemons" $USERNAME
 exit 0
 
-%if 0%{?rhel} == 6
-%post api
-/sbin/chkconfig --add %{name}-api
-%post taskmanager
-/sbin/chkconfig --add %{name}-taskmanager
-%post conductor
-/sbin/chkconfig --add %{name}-conductor
-%post guestagent
-/sbin/chkconfig --add %{name}-guestagent
-
-%preun api
-if [ $1 = 0 ] ; then
-  /sbin/service %{name}-api stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}-api
-fi
-%preun taskmanager
-if [ $1 = 0 ] ; then
-  /sbin/service %{name}-taskmanager stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}-taskmanager
-fi
-%preun conductor
-if [ $1 = 0 ] ; then
-  /sbin/service %{name}-conductor stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}-conductor
-fi
-%preun guestagent
-if [ $1 = 0 ] ; then
-  /sbin/service %{name}-guestagent stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}-guestagent
-fi
-
-%postun api
-if [ $1 -ge 1 ] ; then
-  # Package upgrade, not uninstall
-  /sbin/service %{name}-api condrestart > /dev/null 2>&1 || :
-fi
-%postun taskmanager
-if [ $1 -ge 1 ] ; then
-  # Package upgrade, not uninstall
-  /sbin/service %{name}-taskmanager condrestart > /dev/null 2>&1 || :
-fi
-%postun conductor
-if [ $1 -ge 1 ] ; then
-  # Package upgrade, not uninstall
-  /sbin/service %{name}-conductor condrestart > /dev/null 2>&1 || :
-fi
-%postun guestagent
-if [ $1 -ge 1 ] ; then
-  # Package upgrade, not uninstall
-  /sbin/service %{name}-guestagent condrestart > /dev/null 2>&1 || :
-fi
-
-%else
-
 %post api
 %systemd_post openstack-trove-api.service
 %post taskmanager
@@ -398,13 +304,13 @@ fi
 %systemd_postun_with_restart openstack-trove-conductor.service
 %postun guestagent
 %systemd_postun_with_restart openstack-trove-guestagent.service
-%endif
+
 
 %files
-%doc LICENSE
+%license LICENSE
 
 %files common
-%doc LICENSE
+%license LICENSE
 %dir %{_sysconfdir}/%{project}
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
@@ -422,56 +328,39 @@ fi
 
 %files api
 %{_bindir}/%{project}-api
-%if 0%{?rhel} == 6
-%{_initrddir}/%{name}-api
-%{_datadir}/%{project}/%{name}-api.upstart
-%else
 %{_unitdir}/%{name}-api.service
-%endif
 
 %files taskmanager
 %{_bindir}/%{project}-taskmanager
-%if 0%{?rhel} == 6
-%{_initrddir}/%{name}-taskmanager
-%{_datadir}/%{project}/%{name}-taskmanager.upstart
-%else
 %{_unitdir}/%{name}-taskmanager.service
-%endif
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-taskmanager.conf
 
 %files conductor
 %{_bindir}/%{project}-conductor
-%if 0%{?rhel} == 6
-%{_initrddir}/%{name}-conductor
-%{_datadir}/%{project}/%{name}-conductor.upstart
-%else
 %{_unitdir}/%{name}-conductor.service
-%endif
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-conductor.conf
 
 %files guestagent
 %{_bindir}/%{project}-guestagent
-%if 0%{?rhel} == 6
-%{_initrddir}/%{name}-guestagent
-%{_datadir}/%{project}/%{name}-guestagent.upstart
-%else
 %{_unitdir}/%{name}-guestagent.service
-%endif
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-guestagent.conf
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/guest_info
 
 %files -n python-%{project}
-%defattr(-,root,root,-)
-%doc LICENSE
+%license LICENSE
 %{python_sitelib}/%{project}
 %{python_sitelib}/%{project}-%{version}*.egg-info
 
 %if 0%{?with_doc}
 %files doc
-%doc LICENSE doc/build/html
+%license LICENSE
+%doc doc/build/html
 %endif
 
 %changelog
+* Fri Oct 17 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-1
+- Update to upstream 2014.2
+
 * Wed Oct 15 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-0.6.rc3
 - Update to upstream 2014.2.rc3
 
