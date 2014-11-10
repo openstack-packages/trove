@@ -1,0 +1,26 @@
+From ae949509f8127c4bcfb8159afae80ab0dcb7db13 Mon Sep 17 00:00:00 2001
+From: Haikel Guemar <hguemar@fedoraproject.org>
+Date: Mon, 10 Nov 2014 17:29:27 +0100
+Subject: [PATCH 2/2] Fix api-paste.ini
+
+---
+ etc/trove/api-paste.ini | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/etc/trove/api-paste.ini b/etc/trove/api-paste.ini
+index 851da2b..425c4ae 100644
+--- a/etc/trove/api-paste.ini
++++ b/etc/trove/api-paste.ini
+@@ -18,9 +18,6 @@ paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+ auth_host = 127.0.0.1
+ auth_port = 35357
+ auth_protocol = http
+-admin_tenant_name = %SERVICE_TENANT_NAME%
+-admin_user = %SERVICE_USER%
+-admin_password = %SERVICE_PASSWORD%
+ # signing_dir is configurable, but the default behavior of the authtoken
+ # middleware should be sufficient.  It will create a temporary directory
+ # in the home directory for the user the trove process is running as.
+-- 
+2.1.0
+

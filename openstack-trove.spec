@@ -4,14 +4,12 @@
 
 Name:             openstack-%{project}
 Version:          2014.2
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
 Source0:          https://launchpad.net/%{project}/%{release_name}/%{version}/+download/%{project}-%{version}.tar.gz
-
-Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -21,6 +19,13 @@ Source10:         %{name}-api.service
 Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
+
+#
+# patches_base=2014.2
+#
+Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
+Patch0002: 0002-Fix-api-paste.ini.patch
+
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -358,6 +363,9 @@ exit 0
 %endif
 
 %changelog
+* Mon Nov 10 2014 hguemar <hguemar@senbonzakura> - 2014.2-2
+- Fix issue in trove-dist-paste.ini
+
 * Fri Oct 17 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-1
 - Update to upstream 2014.2
 
