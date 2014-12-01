@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2014.2
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -238,7 +238,7 @@ install -d -m 755 %{buildroot}%{_unitdir}
 %endif
 install -d -m 755 %{buildroot}%{_datadir}/%{project}
 install -d -m 755 %{buildroot}%{_sharedstatedir}/%{project}
-install -d -m 755 %{buildroot}%{_localstatedir}/log/%{project}
+install -d -m 750 %{buildroot}%{_localstatedir}/log/%{project}
 
 # Install config files
 install -p -D -m 644 %{SOURCE1} %{buildroot}%{_datadir}/%{project}/%{project}-dist.conf
@@ -320,7 +320,7 @@ exit 0
 %config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 
-%dir %attr(0755, %{project}, root) %{_localstatedir}/log/%{project}
+%dir %attr(0750, %{project}, root) %{_localstatedir}/log/%{project}
 %dir %attr(0755, %{project}, root) %{_localstatedir}/run/%{project}
 
 %{_bindir}/%{project}-manage
@@ -363,7 +363,10 @@ exit 0
 %endif
 
 %changelog
-* Mon Nov 10 2014 hguemar <hguemar@senbonzakura> - 2014.2-2
+* Mon Dec 01 2014 Haïkel Guémar <hguemar@sfedoraproject.org> - 2014.2-3
+- Restrict access to log files
+
+* Mon Nov 10 2014 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2-2
 - Fix issue in trove-dist-paste.ini
 
 * Fri Oct 17 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-1
