@@ -3,8 +3,8 @@
 %global project trove
 
 Name:             openstack-%{project}
-Version:          2014.2
-Release:          3%{?dist}
+Version:          2014.2.2
+Release:          1%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -20,12 +20,8 @@ Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
 
-#
-# patches_base=2014.2
-#
 Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
 Patch0002: 0002-Fix-api-paste.ini.patch
-
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -363,6 +359,9 @@ exit 0
 %endif
 
 %changelog
+* Fri Feb 06 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.2-1
+- Update to upstream 2014.2.2
+
 * Mon Dec 01 2014 Haïkel Guémar <hguemar@sfedoraproject.org> - 2014.2-3
 - Restrict access to log files
 

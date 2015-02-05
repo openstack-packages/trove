@@ -1,7 +1,7 @@
-From 0ce62149bffc82e018be0ad60f2c2343be0eb647 Mon Sep 17 00:00:00 2001
+From e97249564960289e27ba5b6e996a6ac90e6d9b17 Mon Sep 17 00:00:00 2001
 From: Haikel Guemar <hguemar@fedoraproject.org>
 Date: Mon, 13 Oct 2014 14:59:39 +0200
-Subject: [PATCH 1/2] Remove runtime dep on python pbr
+Subject: [PATCH] Remove runtime dep on python pbr
 
 ---
  trove/__init__.py | 21 +++++++++++++++++++--
@@ -40,6 +40,3 @@ index 932f8f7..36b2e63 100644
  # We have a circular import problem when we first run python setup.py sdist
  # It's harmless, so deflect it.
  try:
--- 
-2.1.0
-

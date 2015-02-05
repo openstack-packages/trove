@@ -1,7 +1,7 @@
-From ae949509f8127c4bcfb8159afae80ab0dcb7db13 Mon Sep 17 00:00:00 2001
+From 6810d1d8676294d2925d36bffd209b4e97420aa9 Mon Sep 17 00:00:00 2001
 From: Haikel Guemar <hguemar@fedoraproject.org>
 Date: Mon, 10 Nov 2014 17:29:27 +0100
-Subject: [PATCH 2/2] Fix api-paste.ini
+Subject: [PATCH] Fix api-paste.ini
 
 ---
  etc/trove/api-paste.ini | 3 ---
@@ -21,6 +21,3 @@ index 851da2b..425c4ae 100644
  # signing_dir is configurable, but the default behavior of the authtoken
  # middleware should be sufficient.  It will create a temporary directory
  # in the home directory for the user the trove process is running as.
--- 
-2.1.0
-
