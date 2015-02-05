@@ -3,8 +3,8 @@
 %global project trove
 
 Name:             openstack-%{project}
-Version:          2014.2
-Release:          3%{?dist}
+Version:          XXX
+Release:          XXX%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -23,8 +23,6 @@ Source13:         %{name}-guestagent.service
 #
 # patches_base=2014.2
 #
-Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
-Patch0002: 0002-Fix-api-paste.ini.patch
 
 
 BuildArch:        noarch
@@ -166,7 +164,7 @@ This package contains documentation files for %{project}.
 %endif
 
 %prep
-%autosetup -n %{project}-%{version} -S git
+%autosetup -n %{project}-%{upstream_version} -S git
 
 sed -i s/REDHATTROVEVERSION/%{version}/ trove/__init__.py
 sed -i s/REDHATTROVERELEASE/%{release}/ trove/__init__.py
