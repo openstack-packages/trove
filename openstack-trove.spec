@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          XXX
-Release:          XXX%{?dist}
+Release:          XXX
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -62,7 +62,7 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description api
@@ -73,7 +73,7 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description taskmanager
@@ -84,7 +84,7 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description conductor
@@ -100,6 +100,7 @@ Requires:         pexpect
 %else
 Requires:         python-pexpect
 %endif
+Requires:         python-netifaces
 
 Requires:         %{name}-common = %{version}-%{release}
 
@@ -361,40 +362,3 @@ exit 0
 %endif
 
 %changelog
-* Mon Dec 01 2014 Haïkel Guémar <hguemar@sfedoraproject.org> - 2014.2-3
-- Restrict access to log files
-
-* Mon Nov 10 2014 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2-2
-- Fix issue in trove-dist-paste.ini
-
-* Fri Oct 17 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-1
-- Update to upstream 2014.2
-
-* Wed Oct 15 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-0.6.rc3
-- Update to upstream 2014.2.rc3
-
-* Mon Oct 13 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.5.rc2
-- Update to upstream 2014.2.rc2
-- Add patch that remove runtime dep on pbr
-
-* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.4.b3
-- Update to upstream 2014.2.b3
-
-* Tue Jun 24 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-6
-- Use more up to date build dependencies for systemd
-
-* Mon Jun 16 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-4
-- Have guestagent reference /etc/guest_info
-- Require correct version of python-oslo-config
-
-* Wed May 21 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-3
-- Tweaks for fedora review
-
-* Sun Apr 27 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-2
-- Have guestagent reference /etc/guest-info
-
-* Fri Apr 18 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-1
-- Update to Icehouse release
-
-* Mon Apr 07 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-0.1.rc1
-- Initial release
