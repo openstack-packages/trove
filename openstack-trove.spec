@@ -98,6 +98,7 @@ Requires:         pexpect
 %else
 Requires:         python-pexpect
 %endif
+Requires:         python-netifaces
 
 Requires:         %{name}-common = %{version}-%{release}
 
