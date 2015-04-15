@@ -3,7 +3,7 @@
 %global project trove
 
 Name:             openstack-%{project}
-Version:          2014.2.2
+Version:          2014.2.3
 Release:          1%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
@@ -360,6 +360,11 @@ exit 0
 %endif
 
 %changelog
+* Wed Apr 15 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.3-1
+- Update to upstream 2014.2.3
+- Add missing requirements to python-netifaces (RHBZ#1205950)
+- Add dep to mariadb.service to openstack-trove-guestagent (RHBZ#1209584)
+
 * Fri Feb 06 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.2-1
 - Update to upstream 2014.2.2
 

@@ -1,4 +1,4 @@
-From e97249564960289e27ba5b6e996a6ac90e6d9b17 Mon Sep 17 00:00:00 2001
+From 99d3c5fb9b89001cbc55eddd92a0de598966e767 Mon Sep 17 00:00:00 2001
 From: Haikel Guemar <hguemar@fedoraproject.org>
 Date: Mon, 13 Oct 2014 14:59:39 +0200
 Subject: [PATCH] Remove runtime dep on python pbr

@@ -1,4 +1,4 @@
-From 6810d1d8676294d2925d36bffd209b4e97420aa9 Mon Sep 17 00:00:00 2001
+From de4508bbc5f4c0027c52c96aa22f1a27c766ee60 Mon Sep 17 00:00:00 2001
 From: Haikel Guemar <hguemar@fedoraproject.org>
 Date: Mon, 10 Nov 2014 17:29:27 +0100
 Subject: [PATCH] Fix api-paste.ini
