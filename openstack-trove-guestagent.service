@@ -1,6 +1,6 @@
 [Unit]
 Description=OpenStack Trove guestagent Service
-After=syslog.target network.target mariadb.service
+After=syslog.target network.target
 
 [Service]
 Type=simple

@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2014.2.3
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -60,7 +60,7 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description api
@@ -71,7 +71,7 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description taskmanager
@@ -82,7 +82,7 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-
+Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description conductor
@@ -360,6 +360,9 @@ exit 0
 %endif
 
 %changelog
+* Thu Apr 16 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2.3-2
+- Add deps to mariadb service to openstack-trove-{api,conductor,taskmanager}
+
 * Wed Apr 15 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.3-1
 - Update to upstream 2014.2.3
 - Add missing requirements to python-netifaces (RHBZ#1205950)
