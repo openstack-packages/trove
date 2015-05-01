@@ -1,10 +1,10 @@
-%global release_name juno
+%global release_name kilo
 %global with_doc 0
 %global project trove
 
 Name:             openstack-%{project}
-Version:          2014.2.3
-Release:          2%{?dist}
+Version:          2015.1.0
+Release:          1%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -19,9 +19,6 @@ Source10:         %{name}-api.service
 Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
-
-Patch0001: 0001-Remove-runtime-dep-on-python-pbr.patch
-Patch0002: 0002-Fix-api-paste.ini.patch
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -50,6 +47,7 @@ Requires(postun): systemd
 BuildRequires:    systemd
 
 Requires(pre):    shadow-utils
+Requires:         python-pbr
 
 %description common
 OpenStack DBaaS (codename %{project}) provisioning service.
@@ -165,10 +163,6 @@ This package contains documentation files for %{project}.
 %prep
 %autosetup -n %{project}-%{version} -S git
 
-sed -i s/REDHATTROVEVERSION/%{version}/ trove/__init__.py
-sed -i s/REDHATTROVERELEASE/%{release}/ trove/__init__.py
-
-
 # Avoid non-executable-script rpmlint while maintaining timestamps
 find %{project} -name \*.py |
 while read source; do
@@ -179,8 +173,6 @@ while read source; do
     rm "$source".ts
   fi
 done
-
-sed -i 's/REDHATVERSION/%{version}/; s/REDHATRELEASE/%{release}/' %{project}/version.py
 
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
