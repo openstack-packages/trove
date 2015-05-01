@@ -1,0 +1,7 @@
+Code-Review+2: Alan Pevec <alan.pevec@redhat.com>
+Verified+1: Alan Pevec <alan.pevec@redhat.com>
+Submitted-by: Alan Pevec <alan.pevec@redhat.com>
+Submitted-at: Fri, 01 May 2015 02:12:41 +0200
+Reviewed-on: https://review.gerrithub.io/232069
+Project: openstack-packages/trove
+Branch: refs/heads/rpm-master
