@@ -58,7 +58,6 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description api
@@ -69,7 +68,6 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description taskmanager
@@ -80,7 +78,6 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description conductor
@@ -352,6 +349,10 @@ exit 0
 %endif
 
 %changelog
+* Wed May 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2014.2.3-3
+- Remove deps to mariadb service to openstack-trove-{api,conductor,taskmanager} and
+adds restarts on failure
+
 * Thu Apr 16 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2.3-2
 - Add deps to mariadb service to openstack-trove-{api,conductor,taskmanager}
 
