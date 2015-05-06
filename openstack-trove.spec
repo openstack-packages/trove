@@ -62,7 +62,6 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description api
@@ -73,7 +72,6 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description taskmanager
@@ -84,7 +82,6 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-Requires:         mariadb-server
 Requires:         %{name}-common = %{version}-%{release}
 
 %description conductor

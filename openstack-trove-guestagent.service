@@ -6,6 +6,7 @@ After=syslog.target network.target
 Type=simple
 User=trove
 ExecStart=/usr/bin/trove-guestagent --config-file /usr/share/trove/trove-dist.conf --config-file /etc/trove/trove-guestagent.conf --config-file /etc/guest_info
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
