@@ -6,6 +6,8 @@ After=syslog.target network.target mariadb.service
 Type=simple
 User=trove
 ExecStart=/usr/bin/trove-api
+Restart=on-failure
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
