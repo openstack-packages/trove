@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2015.1.0
-Release:          1%{?dist}
+Release:          2%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -349,7 +349,7 @@ exit 0
 %endif
 
 %changelog
-* Wed May 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2014.2.3-3
+* Wed May 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-2
 - Remove deps to mariadb service to openstack-trove-{api,conductor,taskmanager} and
 adds restarts on failure
 
