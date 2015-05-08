@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2015.1.0
-Release:          2%{?dist}
+Release:          3%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -133,6 +133,9 @@ Requires:         python-swiftclient
 Requires:         python-keystoneclient >= 0.4.1
 
 Requires:         python-oslo-config >= 1:1.2.1
+Requires:         python-oslo-concurrency
+Requires:         python-oslo-messaging
+Requires:         python-osprofiler
 Requires:         python-jsonschema
 Requires:         python-babel
 Requires:         python-jinja2
@@ -349,6 +352,9 @@ exit 0
 %endif
 
 %changelog
+* Fri May 08 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-3
+- Adds missing dependencies (osloconcurrency, oslomessaging, osprofiler)
+
 * Wed May 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-2
 - Remove deps to mariadb service to openstack-trove-{api,conductor,taskmanager} and
 adds restarts on failure
