@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a106d94_1f7f3f16",
+        "filename": "openstack-trove-guestagent.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1004916
+      },
+      "writtenOn": "2015-05-08T15:33:15Z",
+      "side": 1,
+      "message": "guest_info has been renamed to guest_info.conf upstream. Should we do the same to avoid confusion? If so, this seems to be the right opportunity.",
+      "revId": "6b915ddc3fb2a94b0dbec968e32e12ed597288b2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
