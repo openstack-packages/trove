@@ -137,6 +137,9 @@ Requires:         python-swiftclient
 Requires:         python-keystoneclient >= 0.4.1
 
 Requires:         python-oslo-config >= 1:1.2.1
+Requires:         python-oslo-concurrency
+Requires:         python-oslo-messaging
+Requires:         python-osprofiler
 Requires:         python-jsonschema
 Requires:         python-babel
 Requires:         python-jinja2
