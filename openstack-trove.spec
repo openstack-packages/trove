@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2015.1.0
-Release:          3%{?dist}
+Release:          4%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -181,23 +181,6 @@ rm -rf {test-,}requirements.txt
 %build
 %{__python2} setup.py build
 
-# Programmatically update defaults in sample config
-# which is installed at /etc/trove/trove.conf
-
-#  First we ensure all values are commented in appropriate format.
-#  Since icehouse, there was an uncommented keystone_authtoken section
-#  at the end of the file which mimics but also conflicted with our
-#  distro editing that had been done for many releases.
-sed -i '/^[^#[]/{s/^/#/; s/ //g}; /^#[^ ]/s/ = /=/' etc/%{project}/%{project}.conf.sample
-
-#  TODO: Make this more robust
-#  Note it only edits the first occurance, so assumes a section ordering in sample
-#  and also doesn't support multi-valued variables like dhcpbridge_flagfile.
-while read name eq value; do
-  test "$name" && test "$value" || continue
-  sed -i "0,/^# *$name=/{s!^# *$name=.*!#$name=$value!}" etc/%{project}/%{project}.conf.sample
-done < %{SOURCE1}
-
 %install
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
@@ -352,6 +335,9 @@ exit 0
 %endif
 
 %changelog
+* Thu May 14 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-4
+- Removes comment out trove.conf script (RHBZ#1218723)
+
 * Fri May 08 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-3
 - Adds missing dependencies (osloconcurrency, oslomessaging, osprofiler)
 
