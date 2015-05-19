@@ -1,0 +1,7 @@
+Code-Review+2: Gaël Chamoulaud <gchamoul@redhat.com>
+Verified+1: Gaël Chamoulaud <gchamoul@redhat.com>
+Submitted-by: Gaël Chamoulaud <gchamoul@redhat.com>
+Submitted-at: Tue, 19 May 2015 17:42:46 +0200
+Reviewed-on: https://review.gerrithub.io/232515
+Project: openstack-packages/trove
+Branch: refs/heads/rpm-master
