@@ -4,7 +4,7 @@
 
 Name:             openstack-%{project}
 Version:          2015.1.0
-Release:          4%{?dist}
+Release:          5%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -335,6 +335,9 @@ exit 0
 %endif
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2015.1.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Thu May 14 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-4
 - Removes comment out trove.conf script (RHBZ#1218723)
 
