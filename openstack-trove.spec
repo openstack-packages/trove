@@ -3,6 +3,9 @@
 %global project trove
 
 Name:             openstack-%{project}
+# Liberty semver reset
+# https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
+Epoch:            1
 Version:          XXX
 Release:          XXX
 Summary:          OpenStack DBaaS (%{project})
@@ -33,9 +36,9 @@ BuildRequires:    python-d2to1
 BuildRequires:    python-sphinx
 BuildRequires:    intltool
 
-Requires:         %{name}-api = %{version}-%{release}
-Requires:         %{name}-taskmanager = %{version}-%{release}
-Requires:         %{name}-conductor = %{version}-%{release}
+Requires:         %{name}-api = %{epoch}:%{version}-%{release}
+Requires:         %{name}-taskmanager = %{epoch}:%{version}-%{release}
+Requires:         %{name}-conductor = %{epoch}:%{version}-%{release}
 
 
 %description
@@ -44,7 +47,7 @@ OpenStack DBaaS (codename %{project}) provisioning service.
 %package common
 Summary:          Components common to all OpenStack %{project} services
 
-Requires:         python-%{project} = %{version}-%{release}
+Requires:         python-%{project} = %{epoch}:%{version}-%{release}
 
 Requires(post):   systemd
 Requires(preun):  systemd
@@ -62,7 +65,7 @@ between all the OpenStack %{project} services.
 
 %package api
 Summary:          OpenStack %{project} API service
-Requires:         %{name}-common = %{version}-%{release}
+Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description api
 OpenStack DBaaS (codename %{project}) provisioning service.
@@ -72,7 +75,7 @@ This package contains the %{project} interface daemon.
 
 %package taskmanager
 Summary:          OpenStack %{project} taskmanager service
-Requires:         %{name}-common = %{version}-%{release}
+Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description taskmanager
 OpenStack DBaaS (codename %{project}) provisioning service.
@@ -82,7 +85,7 @@ This package contains the %{project} taskmanager service.
 
 %package conductor
 Summary:          OpenStack %{project} conductor service
-Requires:         %{name}-common = %{version}-%{release}
+Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description conductor
 OpenStack DBaaS (codename %{project}) provisioning service.
@@ -99,7 +102,7 @@ Requires:         python-pexpect
 %endif
 Requires:         python-netifaces
 
-Requires:         %{name}-common = %{version}-%{release}
+Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description guestagent
 OpenStack DBaaS (codename %{project}) provisioning service.
