@@ -16,6 +16,24 @@
       "revId": "9a8f030082867c00ec4df95e0ed6ffbf5b881d56",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "facab960_fbb8fac9",
+        "filename": "openstack-trove.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000935
+      },
+      "writtenOn": "2015-06-22T17:54:53Z",
+      "side": 1,
+      "message": "Yeah, I was going to ask about this.",
+      "parentUuid": "facab960_7b978a48",
+      "revId": "9a8f030082867c00ec4df95e0ed6ffbf5b881d56",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
