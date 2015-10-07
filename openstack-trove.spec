@@ -1,15 +1,20 @@
-%global release_name kilo
-%global with_doc 0
+
+%global release_name liberty
 %global project trove
+%global milestone .0rc1
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
+
+%global with_doc 0
 
 Name:             openstack-%{project}
-Version:          2015.1.0
-Release:          5%{?dist}
+Epoch:            1
+Version:          4.0.0
+Release:          0.1%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/%{release_name}/%{version}/+download/%{project}-%{version}.tar.gz
+Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-rc1/+download/%{project}-%{upstream_version}.tar.gz
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -109,19 +114,20 @@ Summary:          Python libraries for %{project}
 
 Requires:         MySQL-python
 
-Requires:         python-qpid
 Requires:         python-kombu
 
 Requires:         python-eventlet
-Requires:         python-greenlet
 Requires:         python-iso8601
 Requires:         python-netaddr
 Requires:         python-lxml
+Requires:         python-six
+Requires:         python-stevedore
 
 Requires:         python-webob >= 1.2
 Requires:         python-migrate
 
 Requires:         python-sqlalchemy
+Requires:         python-paste
 Requires:         python-paste-deploy
 Requires:         python-routes
 
@@ -131,10 +137,20 @@ Requires:         python-cinderclient
 Requires:         python-heatclient
 Requires:         python-swiftclient
 Requires:         python-keystoneclient >= 0.4.1
+Requires:         python-keystonemiddleware
+Requires:         python-designateclient
+Requires:         python-neutronclient
 
 Requires:         python-oslo-config >= 1:1.2.1
 Requires:         python-oslo-concurrency
 Requires:         python-oslo-messaging
+Requires:         python-oslo-context
+Requires:         python-oslo-i18n
+Requires:         python-oslo-serialization
+Requires:         python-oslo-service
+Requires:         python-oslo-utils
+Requires:         python-oslo-log
+
 Requires:         python-osprofiler
 Requires:         python-jsonschema
 Requires:         python-babel
@@ -142,7 +158,6 @@ Requires:         python-jinja2
 
 Requires:         python-httplib2
 Requires:         python-passlib
-
 
 %description -n   python-%{project}
 OpenStack DBaaS (codename %{project}) provisioning service.
@@ -161,7 +176,7 @@ This package contains documentation files for %{project}.
 %endif
 
 %prep
-%autosetup -n %{project}-%{version} -S git
+%autosetup -n %{project}-%{upstream_version} -S git
 
 # Avoid non-executable-script rpmlint while maintaining timestamps
 find %{project} -name \*.py |
@@ -335,64 +350,5 @@ exit 0
 %endif
 
 %changelog
-* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2015.1.0-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
-* Thu May 14 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-4
-- Removes comment out trove.conf script (RHBZ#1218723)
-
-* Fri May 08 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-3
-- Adds missing dependencies (osloconcurrency, oslomessaging, osprofiler)
-
-* Wed May 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 2015.1.0-2
-- Remove deps to mariadb service to openstack-trove-{api,conductor,taskmanager} and
-adds restarts on failure
-
-* Thu Apr 16 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2.3-2
-- Add deps to mariadb service to openstack-trove-{api,conductor,taskmanager}
-
-* Wed Apr 15 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.3-1
-- Update to upstream 2014.2.3
-- Add missing requirements to python-netifaces (RHBZ#1205950)
-- Add dep to mariadb.service to openstack-trove-guestagent (RHBZ#1209584)
-
-* Fri Feb 06 2015 Haikel Guemar <hguemar@fedoraproject.org> - 2014.2.2-1
-- Update to upstream 2014.2.2
-
-* Mon Dec 01 2014 Haïkel Guémar <hguemar@sfedoraproject.org> - 2014.2-3
-- Restrict access to log files
-
-* Mon Nov 10 2014 Haïkel Guémar <hguemar@fedoraproject.org> - 2014.2-2
-- Fix issue in trove-dist-paste.ini
-
-* Fri Oct 17 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-1
-- Update to upstream 2014.2
-
-* Wed Oct 15 2014 Haïkel Guémar <hguemar@fedoraproject.org> 2014.2-0.6.rc3
-- Update to upstream 2014.2.rc3
-
-* Mon Oct 13 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.5.rc2
-- Update to upstream 2014.2.rc2
-- Add patch that remove runtime dep on pbr
-
-* Thu Sep 18 2014 Haikel Guemar <hguemar@fedoraproject.org> 2014.2-0.4.b3
-- Update to upstream 2014.2.b3
-
-* Tue Jun 24 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-6
-- Use more up to date build dependencies for systemd
-
-* Mon Jun 16 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-4
-- Have guestagent reference /etc/guest_info
-- Require correct version of python-oslo-config
-
-* Wed May 21 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-3
-- Tweaks for fedora review
-
-* Sun Apr 27 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-2
-- Have guestagent reference /etc/guest-info
-
-* Fri Apr 18 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-1
-- Update to Icehouse release
-
-* Mon Apr 07 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-0.1.rc1
-- Initial release
+* Tue Oct 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 1:4.0.0-0.1.0rc1
+- Update to upstream 4.0.0.0rc1
