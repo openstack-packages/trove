@@ -1,7 +1,6 @@
-
 %global release_name liberty
 %global project trove
-%global milestone .0rc1
+%global milestone .0rc2
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 %global with_doc 0
@@ -14,7 +13,7 @@ Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-rc1/+download/%{project}-%{upstream_version}.tar.gz
+Source0:          https://launchpad.net/%{project}/%{release_name}/%{release_name}-rc2/+download/%{project}-%{upstream_version}.tar.gz
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
@@ -350,5 +349,8 @@ exit 0
 %endif
 
 %changelog
+* Thu Oct 08 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 1:4.0.0-0.1.0rc2
+- Update to upstream 4.0.0.0rc2
+
 * Tue Oct 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> - 1:4.0.0-0.1.0rc1
 - Update to upstream 4.0.0.0rc1
