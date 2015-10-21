@@ -14,9 +14,8 @@ License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
 Source0:          http://tarballs.openstack.org/%{service}/%{service}-%{upstream_version}.tar.gz
 
-Source1:          %{service}-dist.conf
-Source2:          %{service}.logrotate
-Source3:          guest_info
+Source1:          %{service}.logrotate
+Source2:          guest_info
 
 Source10:         %{name}-api.service
 Source11:         %{name}-taskmanager.service
@@ -29,6 +28,7 @@ BuildRequires:    python-setuptools
 BuildRequires:    python-pbr
 BuildRequires:    python-d2to1
 BuildRequires:    python-sphinx
+BuildRequires:    crudini
 BuildRequires:    intltool
 
 Requires:         %{name}-api = %{epoch}:%{version}-%{release}
@@ -226,14 +226,17 @@ install -d -m 755 %{buildroot}%{_sharedstatedir}/%{service}
 install -d -m 750 %{buildroot}%{_localstatedir}/log/%{service}
 
 # Install config files
-install -p -D -m 644 %{SOURCE1} %{buildroot}%{_datadir}/%{service}/%{service}-dist.conf
+install -p -D -m 644 etc/%{service}/%{service}.conf.sample %{buildroot}%{_datadir}/%{service}/%{service}.conf
+# Use crudini to set some configuration keys
+crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf database connection mysql://trove:trove@localhost/trove
+crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
 install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_datadir}/%{service}/%{service}-dist-paste.ini
 install -d -m 755 %{buildroot}%{_sysconfdir}/%{service}
 install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
 install -p -D -m 640 etc/%{service}/trove-taskmanager.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-taskmanager.conf
 install -p -D -m 640 etc/%{service}/trove-conductor.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-conductor.conf
 install -p -D -m 640 etc/%{service}/trove-guestagent.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-guestagent.conf
-install -p -D -m 640 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{service}/guest_info
+install -p -D -m 640 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{service}/guest_info
 
 # Install initscripts
 %if 0%{?rhel} == 6
@@ -247,7 +250,7 @@ install -p -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{buildroot}%{
 %endif
 
 # Install logrotate
-install -p -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -p -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 # Install pid directory
 install -d -m 755 %{buildroot}%{_localstatedir}/run/%{service}
