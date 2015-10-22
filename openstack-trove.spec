@@ -25,7 +25,6 @@ Source13:         %{name}-guestagent.service
 Patch0001:        0001-Fix-mysql-mariadb-configuration-paths-in-templates.patch
 
 BuildArch:        noarch
-
 BuildRequires:    python2-devel
 BuildRequires:    python-setuptools
 BuildRequires:    python-pbr
