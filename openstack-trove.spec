@@ -261,7 +261,7 @@ rm -fr %{buildroot}%{python2_sitelib}/%{service}/tests/
 rm -fr %{buildroot}%{python2_sitelib}/run_tests.*
 
 %pre common
-# Origin: http://fedoraservice.org/wiki/Packaging:UsersAndGroups#Dynamic_allocation
+# Origin: http://fedoraproject.org/wiki/Packaging:UsersAndGroups#Dynamic_allocation
 USERNAME=%{service}
 GROUPNAME=$USERNAME
 HOMEDIR=%{_sharedstatedir}/$USERNAME
