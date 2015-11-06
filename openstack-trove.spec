@@ -226,13 +226,11 @@ install -d -m 755 %{buildroot}%{_sharedstatedir}/%{service}
 install -d -m 750 %{buildroot}%{_localstatedir}/log/%{service}
 
 # Install config files
-install -p -D -m 644 etc/%{service}/%{service}.conf.sample %{buildroot}%{_datadir}/%{service}/%{service}.conf.sample
+install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
 # Use crudini to set some configuration keys
-crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf database connection mysql://trove:trove@localhost/trove
-crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
+crudini --set %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
 install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_sysconfdir}/%{service}/api-paste.ini
 install -d -m 755 %{buildroot}%{_sysconfdir}/%{service}
-install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
 install -p -D -m 640 etc/%{service}/trove-taskmanager.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-taskmanager.conf
 install -p -D -m 640 etc/%{service}/trove-conductor.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-conductor.conf
 install -p -D -m 640 etc/%{service}/trove-guestagent.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-guestagent.conf
