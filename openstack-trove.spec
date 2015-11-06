@@ -7,7 +7,7 @@
 Name:             openstack-%{service}
 Epoch:            1
 Version:          4.0.0
-Release:          1%{?milestone}%{?dist}
+Release:          2%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
@@ -226,11 +226,11 @@ install -d -m 755 %{buildroot}%{_sharedstatedir}/%{service}
 install -d -m 750 %{buildroot}%{_localstatedir}/log/%{service}
 
 # Install config files
-install -p -D -m 644 etc/%{service}/%{service}.conf.sample %{buildroot}%{_datadir}/%{service}/%{service}.conf
+install -p -D -m 644 etc/%{service}/%{service}.conf.sample %{buildroot}%{_datadir}/%{service}/%{service}.conf.sample
 # Use crudini to set some configuration keys
 crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf database connection mysql://trove:trove@localhost/trove
 crudini --set %{buildroot}%{_datadir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
-install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_datadir}/%{service}/%{service}-dist-paste.ini
+install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_sysconfdir}/%{service}/api-paste.ini
 install -d -m 755 %{buildroot}%{_sysconfdir}/%{service}
 install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
 install -p -D -m 640 etc/%{service}/trove-taskmanager.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-taskmanager.conf
@@ -306,6 +306,7 @@ exit 0
 %license LICENSE
 %dir %{_sysconfdir}/%{service}
 %config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/%{service}.conf
+%attr(0640, root, %{service}) %{_sysconfdir}/%{service}/api-paste.ini
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 
 %dir %attr(0750, %{service}, root) %{_localstatedir}/log/%{service}
