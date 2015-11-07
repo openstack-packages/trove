@@ -7,7 +7,7 @@
 Name:             openstack-%{service}
 Epoch:            1
 Version:          4.0.0
-Release:          2%{?milestone}%{?dist}
+Release:          3%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
@@ -21,6 +21,8 @@ Source10:         %{name}-api.service
 Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
+
+Patch0001:        0001-Fix-mysql-mariadb-configuration-paths-in-templates.patch
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -350,6 +352,9 @@ exit 0
 %endif
 
 %changelog
+* Fri Nov 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> 1:4.0.0-3
+- Fix mysql/mariadb configuration paths
+
 * Wed Oct 21 2015 Haikel Guemar <hguemar@fedoraproject.org> 1:4.0.0-1
 - Update to 4.0.0
 

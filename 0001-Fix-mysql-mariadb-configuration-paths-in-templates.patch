@@ -1,0 +1,72 @@
+From 2bd3f52f6d3dcfaa3d6e2bb3ba2e6c5b91a84a22 Mon Sep 17 00:00:00 2001
+From: Victoria Martinez de la Cruz <victoria@redhat.com>
+Date: Fri, 6 Nov 2015 22:48:54 -0300
+Subject: [PATCH 2/2] [PATCH] Fix mysql/mariadb configuration paths in
+ templates
+
+---
+ trove/guestagent/datastore/mysql/service_base.py | 10 +++++-----
+ trove/templates/mariadb/config.template          |  2 +-
+ trove/templates/mysql/config.template            |  2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/trove/guestagent/datastore/mysql/service_base.py b/trove/guestagent/datastore/mysql/service_base.py
+index 764c771..ef4f710 100644
+--- a/trove/guestagent/datastore/mysql/service_base.py
++++ b/trove/guestagent/datastore/mysql/service_base.py
+@@ -69,11 +69,11 @@ OS_NAME = operating_system.get_os()
+ MYSQL_CONFIG = {operating_system.REDHAT: "/etc/my.cnf",
+                 operating_system.DEBIAN: "/etc/mysql/my.cnf",
+                 operating_system.SUSE: "/etc/my.cnf"}[OS_NAME]
+-MYSQL_SERVICE_CANDIDATES = ["mysql", "mysqld", "mysql-server"]
+-MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
++MYSQL_SERVICE_CANDIDATES = ["mariadb", "mysql", "mysqld", "mysql-server"]
++MYSQL_BIN_CANDIDATES = ["/usr/bin/mysqld_safe"]
+ MYSQL_OWNER = 'mysql'
+ CNF_EXT = 'cnf'
+-CNF_INCLUDE_DIR = '/etc/mysql/conf.d/'
++CNF_INCLUDE_DIR = '/etc/my.cnf.d/'
+ CNF_MASTER = 'master-replication'
+ CNF_SLAVE = 'slave-replication'
+ 
+@@ -703,7 +703,7 @@ class BaseMySqlApp(object):
+         """Clear old configs, which can be incompatible with new version."""
+         LOG.debug("Clearing old MySQL config.")
+         random_uuid = str(uuid.uuid4())
+-        configs = ["/etc/my.cnf", "/etc/mysql/conf.d", "/etc/mysql/my.cnf"]
++        configs = ["/etc/my.cnf", "/etc/my.cnf.d"]
+         for config in configs:
+             try:
+                 old_conf_backup = "%s_%s" % (config, random_uuid)
+@@ -714,7 +714,7 @@ class BaseMySqlApp(object):
+                 pass
+ 
+     def _create_mysql_confd_dir(self):
+-        conf_dir = "/etc/mysql/conf.d"
++        conf_dir = "/etc/my.cnf.d"
+         LOG.debug("Creating %s." % conf_dir)
+         operating_system.create_directory(conf_dir, as_root=True)
+ 
+diff --git a/trove/templates/mariadb/config.template b/trove/templates/mariadb/config.template
+index f0155eb..42bd832 100644
+--- a/trove/templates/mariadb/config.template
++++ b/trove/templates/mariadb/config.template
+@@ -54,4 +54,4 @@ max_allowed_packet = 16M
+ [isamchk]
+ key_buffer = 16M
+ 
+-!includedir /etc/mysql/conf.d/
++!includedir /etc/my.conf.d/
+diff --git a/trove/templates/mysql/config.template b/trove/templates/mysql/config.template
+index 78ed025..baa6db8 100644
+--- a/trove/templates/mysql/config.template
++++ b/trove/templates/mysql/config.template
+@@ -53,4 +53,4 @@ max_allowed_packet = 16M
+ [isamchk]
+ key_buffer = 16M
+ 
+-!includedir /etc/mysql/conf.d/
++!includedir /etc/my.cnf.d/
+-- 
+2.4.0
+
