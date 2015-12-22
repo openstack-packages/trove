@@ -204,7 +204,7 @@ rm -rf {test-,}requirements.txt
 sed -i '/^[^#[]/{s/^/#/; s/ //g}; /^#[^ ]/s/ = /=/' etc/%{project}/%{project}.conf.sample
 
 #  TODO: Make this more robust
-#  Note it only edits the first occurance, so assumes a section ordering in sample
+#  Note it only edits the first occurrence, so assumes a section ordering in sample
 #  and also doesn't support multi-valued variables like dhcpbridge_flagfile.
 while read name eq value; do
   test "$name" && test "$value" || continue
