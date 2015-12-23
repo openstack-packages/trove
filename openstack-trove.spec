@@ -7,7 +7,7 @@
 Name:             openstack-%{service}
 Epoch:            1
 Version:          4.0.0
-Release:          3%{?milestone}%{?dist}
+Release:          5%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
@@ -230,6 +230,7 @@ install -d -m 750 %{buildroot}%{_localstatedir}/log/%{service}
 # Install config files
 install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
 # Use crudini to set some configuration keys
+crudini --set %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf database connection mysql://trove:trove@localhost/trove
 crudini --set %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
 install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_sysconfdir}/%{service}/api-paste.ini
 install -d -m 755 %{buildroot}%{_sysconfdir}/%{service}
@@ -352,6 +353,12 @@ exit 0
 %endif
 
 %changelog
+* Wed Dec 23 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 1:4.0.0-5
+- Fix regression introduced from sync by delorean
+
+* Fri Dec 18 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 1:4.0.0-4
+- Fix trove-guestagent systemd bugfix (RHBZ#1219069)
+
 * Fri Nov 06 2015 Victoria Martinez de la Cruz <vkmc@fedoraproject.org> 1:4.0.0-3
 - Fix mysql/mariadb configuration paths
 

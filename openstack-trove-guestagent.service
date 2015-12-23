@@ -5,7 +5,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 User=trove
-ExecStart=/usr/bin/trove-guestagent --config-file /usr/share/trove/trove-dist.conf --config-file /etc/trove/trove-guestagent.conf --config-file /etc/guest_info
+ExecStart=/usr/bin/trove-guestagent --config-file /usr/share/trove/trove-dist.conf --config-file /etc/trove/trove-guestagent.conf --config-file /etc/trove/guest_info
 Restart=on-failure
 
 [Install]
