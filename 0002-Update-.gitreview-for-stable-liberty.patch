@@ -1,0 +1,23 @@
+From d2bc4975b2b363585e09e978258620c9fbe4ef83 Mon Sep 17 00:00:00 2001
+From: Thierry Carrez <thierry@openstack.org>
+Date: Mon, 5 Oct 2015 12:18:07 +0200
+Subject: [PATCH] Update .gitreview for stable/liberty
+
+Update .gitreview for stable/liberty branch to simplify submitting
+backports.
+
+Depends-On: If72ea960f6479e73234ec0cf1af10687f172b86b
+Change-Id: I394ecd1a98ce286b49bbacb62674a3c80182ec51
+---
+ .gitreview | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitreview b/.gitreview
+index 459f3c4..868bdd5 100644
+--- a/.gitreview
++++ b/.gitreview
+@@ -2,3 +2,4 @@
+ host=review.openstack.org
+ port=29418
+ project=openstack/trove.git
++defaultbranch=stable/liberty
