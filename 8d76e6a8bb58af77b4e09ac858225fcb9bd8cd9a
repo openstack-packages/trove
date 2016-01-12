@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa81d914_ad7ea2e2",
+        "filename": "openstack-trove-guestagent.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007194
+      },
+      "writtenOn": "2016-01-12T23:04:18Z",
+      "side": 1,
+      "message": "Are these actually the paths we want?\n/etc/trove/conf.d/, no?\nOr we are relying on image build?",
+      "revId": "8d76e6a8bb58af77b4e09ac858225fcb9bd8cd9a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
