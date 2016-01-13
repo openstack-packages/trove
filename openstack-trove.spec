@@ -7,7 +7,7 @@
 Name:             openstack-%{service}
 Epoch:            1
 Version:          4.0.0
-Release:          5%{?milestone}%{?dist}
+Release:          6%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
@@ -22,7 +22,10 @@ Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
 
-Patch0001:        0001-Fix-mysql-mariadb-configuration-paths-in-templates.patch
+Patch0001: 0001-Switch-to-post-versioning.patch
+Patch0002: 0002-Update-.gitreview-for-stable-liberty.patch
+Patch0003: 0003-Refactor-the-datastore-manager-classes.patch
+Patch0004: 0004-Adds-fix-for-mysql-mariadb-configuration-paths.patch
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -353,6 +356,11 @@ exit 0
 %endif
 
 %changelog
+* Wed Jan 13 2016 Victoria Martinez de la Cruz <victoria@redhat.com> 1:4.0.0-6
+- Adds fix for mysql/mariadb configuration paths
+- Refactor the datastore manager classes
+- Update .gitreview for stable/liberty
+
 * Wed Dec 23 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 1:4.0.0-5
 - Fix regression introduced from sync by delorean
 
