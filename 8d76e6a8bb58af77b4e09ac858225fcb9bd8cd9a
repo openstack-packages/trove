@@ -16,6 +16,24 @@
       "revId": "8d76e6a8bb58af77b4e09ac858225fcb9bd8cd9a",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa81d914_c641f30c",
+        "filename": "openstack-trove-guestagent.service",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1004916
+      },
+      "writtenOn": "2016-01-13T14:06:03Z",
+      "side": 1,
+      "message": "This is an old package version, the paths are not like this in the latest version. This patch is here because we didn\u0027t had a gitreview in place in the openstack-packages/trove repo. Still, it is something we need to define for the new version. Right now we place things on /etc/trove/conf.d/ and the truth is that we could place things directly on /etc/trove/, overwriting the default ones and making things clearer.",
+      "parentUuid": "fa81d914_ad7ea2e2",
+      "revId": "8d76e6a8bb58af77b4e09ac858225fcb9bd8cd9a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
