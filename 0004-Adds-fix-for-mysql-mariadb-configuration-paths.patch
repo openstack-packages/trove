@@ -1,35 +1,39 @@
-From 2bd3f52f6d3dcfaa3d6e2bb3ba2e6c5b91a84a22 Mon Sep 17 00:00:00 2001
+From a81f4abb502279b6c0acaa2d10e62fa1b8a8e1a4 Mon Sep 17 00:00:00 2001
 From: Victoria Martinez de la Cruz <victoria@redhat.com>
-Date: Fri, 6 Nov 2015 22:48:54 -0300
-Subject: [PATCH 2/2] [PATCH] Fix mysql/mariadb configuration paths in
- templates
+Date: Tue, 12 Jan 2016 16:43:27 -0300
+Subject: [PATCH] Adds fix for mysql/mariadb configuration paths
 
+Fix MariaDB paths (RHBZ#1288590)
+Restores upstream  MYSQL_BIN_CANDIDATES (RHBZ#1293622)
+
+Change-Id: I6c8b073fbcd03d9b63161f8b361dd368794ea4b9
 ---
- trove/guestagent/datastore/mysql/service_base.py | 10 +++++-----
- trove/templates/mariadb/config.template          |  2 +-
- trove/templates/mysql/config.template            |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ trove/guestagent/datastore/mysql_common/service.py | 10 ++++++----
+ trove/templates/mariadb/config.template            |  4 ++--
+ trove/templates/mysql/config.template              |  2 +-
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/trove/guestagent/datastore/mysql/service_base.py b/trove/guestagent/datastore/mysql/service_base.py
-index 764c771..ef4f710 100644
---- a/trove/guestagent/datastore/mysql/service_base.py
-+++ b/trove/guestagent/datastore/mysql/service_base.py
-@@ -69,11 +69,11 @@ OS_NAME = operating_system.get_os()
+diff --git a/trove/guestagent/datastore/mysql_common/service.py b/trove/guestagent/datastore/mysql_common/service.py
+index 5e24dfc..c9fac35 100644
+--- a/trove/guestagent/datastore/mysql_common/service.py
++++ b/trove/guestagent/datastore/mysql_common/service.py
+@@ -69,11 +69,13 @@ OS_NAME = operating_system.get_os()
  MYSQL_CONFIG = {operating_system.REDHAT: "/etc/my.cnf",
                  operating_system.DEBIAN: "/etc/mysql/my.cnf",
                  operating_system.SUSE: "/etc/my.cnf"}[OS_NAME]
 -MYSQL_SERVICE_CANDIDATES = ["mysql", "mysqld", "mysql-server"]
--MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
 +MYSQL_SERVICE_CANDIDATES = ["mariadb", "mysql", "mysqld", "mysql-server"]
-+MYSQL_BIN_CANDIDATES = ["/usr/bin/mysqld_safe"]
+ MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
  MYSQL_OWNER = 'mysql'
  CNF_EXT = 'cnf'
 -CNF_INCLUDE_DIR = '/etc/mysql/conf.d/'
-+CNF_INCLUDE_DIR = '/etc/my.cnf.d/'
++CNF_INCLUDE_DIR = {operating_system.REDHAT: "/etc/my.cnf.d/",
++                   operating_system.DEBIAN: "/etc/mysql/conf.d/",
++                   operating_system.SUSE: "/etc/my.cnf.d/"}[OS_NAME]
  CNF_MASTER = 'master-replication'
  CNF_SLAVE = 'slave-replication'
  
-@@ -703,7 +703,7 @@ class BaseMySqlApp(object):
+@@ -700,7 +702,7 @@ class BaseMySqlApp(object):
          """Clear old configs, which can be incompatible with new version."""
          LOG.debug("Clearing old MySQL config.")
          random_uuid = str(uuid.uuid4())
@@ -38,7 +42,7 @@ index 764c771..ef4f710 100644
          for config in configs:
              try:
                  old_conf_backup = "%s_%s" % (config, random_uuid)
-@@ -714,7 +714,7 @@ class BaseMySqlApp(object):
+@@ -711,7 +713,7 @@ class BaseMySqlApp(object):
                  pass
  
      def _create_mysql_confd_dir(self):
@@ -48,15 +52,24 @@ index 764c771..ef4f710 100644
          operating_system.create_directory(conf_dir, as_root=True)
  
 diff --git a/trove/templates/mariadb/config.template b/trove/templates/mariadb/config.template
-index f0155eb..42bd832 100644
+index f0155eb..accd1a4 100644
 --- a/trove/templates/mariadb/config.template
 +++ b/trove/templates/mariadb/config.template
+@@ -13,7 +13,7 @@ basedir = /usr
+ datadir = /var/lib/mysql/data
+ ####tmpdir = /tmp
+ tmpdir = /var/tmp
+-pid_file = /var/run/mysqld/mysqld.pid
++pid_file = /var/run/mariadb/mariadb.pid
+ skip-external-locking = 1
+ key_buffer_size = {{ (50 * flavor['ram']/512)|int }}M
+ max_allowed_packet = {{ (1024 * flavor['ram']/512)|int }}K
 @@ -54,4 +54,4 @@ max_allowed_packet = 16M
  [isamchk]
  key_buffer = 16M
  
 -!includedir /etc/mysql/conf.d/
-+!includedir /etc/my.conf.d/
++!includedir /etc/my.cnf.d/
 diff --git a/trove/templates/mysql/config.template b/trove/templates/mysql/config.template
 index 78ed025..baa6db8 100644
 --- a/trove/templates/mysql/config.template
@@ -67,6 +80,3 @@ index 78ed025..baa6db8 100644
  
 -!includedir /etc/mysql/conf.d/
 +!includedir /etc/my.cnf.d/
--- 
-2.4.0
-
