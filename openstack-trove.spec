@@ -156,6 +156,13 @@ OpenStack DBaaS (codename %{project}) provisioning service.
 
 This package contains the %{project} python library.
 
+%package -n python-%{project}-tests
+Summary:        Trove tests
+Requires:       python-%{project} = %{epoch}:%{version}-%{release}
+
+%description -n python-%{project}-tests
+This package contains the Trove test files
+
 %if 0%{?with_doc}
 %package doc
 Summary:          Documentation for OpenStack %{project}
@@ -271,9 +278,7 @@ install -d -m 755 %{buildroot}%{_localstatedir}/run/%{project}
 
 # Remove unneeded in production stuff
 rm -fr %{buildroot}%{_bindir}/trove-fake-mode
-rm -fr %{buildroot}%{python_sitelib}/%{project}/tests/
 rm -fr %{buildroot}%{python_sitelib}/run_tests.*
-
 %pre common
 # Origin: http://fedoraproject.org/wiki/Packaging:UsersAndGroups#Dynamic_allocation
 USERNAME=%{project}
@@ -357,6 +362,11 @@ exit 0
 %license LICENSE
 %{python_sitelib}/%{project}
 %{python_sitelib}/%{project}-%{version}*.egg-info
+%exclude %{python2_sitelib}/%{project}/tests
+
+%files -n python-%{project}-tests
+%license LICENSE
+%{python2_sitelib}/%{project}/tests
 
 %if 0%{?with_doc}
 %files doc
