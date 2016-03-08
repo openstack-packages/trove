@@ -16,6 +16,24 @@
       "revId": "6af750ecef24a0a4777d7d4eb7bc7748f32c15c9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a72e520_796538e0",
+        "filename": "openstack-trove.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1002579
+      },
+      "writtenOn": "2016-03-08T07:31:49Z",
+      "side": 1,
+      "message": "Where we should keep these files under test subpackage or we move it under python sitelib folder (which i think is not good)?",
+      "parentUuid": "5a72e520_00d92957",
+      "revId": "6af750ecef24a0a4777d7d4eb7bc7748f32c15c9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
