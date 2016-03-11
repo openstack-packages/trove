@@ -1,4 +1,4 @@
-%global release_name juno
+%global release_name mitaka
 %global with_doc 0
 %global project trove
 
