@@ -1,0 +1,9 @@
+Code-Review+1: Jon Schlueter <jschluet@redhat.com>
+Verified+1: rdo-ci-jenkins <whayutin+rdocijenkins@redhat.com>
+Code-Review+1: Jason Joyce <jjoyce@redhat.com>
+Code-Review+2: Haïkel Guémar <haikel.guemar@gmail.com>
+Submitted-by: Haïkel Guémar <haikel.guemar@gmail.com>
+Submitted-at: Fri, 11 Mar 2016 22:06:18 +0100
+Reviewed-on: https://review.gerrithub.io/265936
+Project: openstack-packages/trove
+Branch: refs/heads/rpm-master
