@@ -12,7 +12,7 @@ Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          https://launchpad.net/%{project}/%{release_name}/%{version}/+download/%{project}-%{version}.tar.gz
+Source0:          http://tarballs.openstack.org/%{project}/%{project}-%{version}.tar.gz
 
 Source1:          %{project}-dist.conf
 Source2:          %{project}.logrotate
