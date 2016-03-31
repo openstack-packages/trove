@@ -1,4 +1,4 @@
-%define milestone .0rc1
+%define milestone .0rc2
 %global release_name mitaka
 %global with_doc 0
 %global project trove
@@ -10,7 +10,7 @@ Name:             openstack-%{project}
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:            1
 Version:          5.0.0
-Release:          0.1%{?milestone}%{?dist}
+Release:          0.2%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{project})
 
 License:          ASL 2.0
@@ -26,9 +26,7 @@ Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
 
-#
-# patches_base=2014.2
-#
+Patch0001:        0001-Fixes-migrations-for-MySQL-5.6.-and-MariaDB-10.1.patch
 
 
 BuildArch:        noarch
@@ -378,5 +376,9 @@ exit 0
 %endif
 
 %changelog
+* Fri Apr 01 2016 Alan Pevec <apevec AT redhat.com> 5.0.0-0.2.0rc2
+- RC2 Mitaka
+- Fixes migrations for MySQL 5.6.* and MariaDB 10.1.* LP#1473226
+
 * Thu Mar 24 2016 RDO <rdo-list@redhat.com> 5.0.0-0.1.0rc1
 - RC1 Rebuild for Mitaka rc1
