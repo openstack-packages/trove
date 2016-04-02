@@ -1,32 +1,26 @@
 %global release_name mitaka
-%global with_doc 0
-%global project trove
+%global service trove
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
-Name:             openstack-%{project}
-# Liberty semver reset
-# https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
+%global with_doc 0
+
+Name:             openstack-%{service}
 Epoch:            1
 Version:          XXX
 Release:          XXX
-Summary:          OpenStack DBaaS (%{project})
+Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
 URL:              https://wiki.openstack.org/wiki/Trove
-Source0:          http://tarballs.openstack.org/%{project}/%{project}-%{version}.tar.gz
+Source0:          http://tarballs.openstack.org/%{service}/%{service}-%{upstream_version}.tar.gz
 
-Source1:          %{project}-dist.conf
-Source2:          %{project}.logrotate
-Source3:          guest_info
+Source1:          %{service}.logrotate
+Source2:          guest_info
 
 Source10:         %{name}-api.service
 Source11:         %{name}-taskmanager.service
 Source12:         %{name}-conductor.service
 Source13:         %{name}-guestagent.service
-
-#
-# patches_base=2014.2
-#
-
 
 BuildArch:        noarch
 BuildRequires:    python2-devel
@@ -34,6 +28,7 @@ BuildRequires:    python-setuptools
 BuildRequires:    python-pbr
 BuildRequires:    python-d2to1
 BuildRequires:    python-sphinx
+BuildRequires:    crudini
 BuildRequires:    intltool
 
 Requires:         %{name}-api = %{epoch}:%{version}-%{release}
@@ -42,12 +37,12 @@ Requires:         %{name}-conductor = %{epoch}:%{version}-%{release}
 
 
 %description
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
 %package common
-Summary:          Components common to all OpenStack %{project} services
+Summary:          Components common to all OpenStack %{service} services
 
-Requires:         python-%{project} = %{epoch}:%{version}-%{release}
+Requires:         python-%{service} = %{epoch}:%{version}-%{release}
 
 Requires(post):   systemd
 Requires(preun):  systemd
@@ -55,46 +50,47 @@ Requires(postun): systemd
 BuildRequires:    systemd
 
 Requires(pre):    shadow-utils
+Requires:         python-pbr
 
 %description common
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
 This package contains scripts, config and dependencies shared
-between all the OpenStack %{project} services.
+between all the OpenStack %{service} services.
 
 
 %package api
-Summary:          OpenStack %{project} API service
+Summary:          OpenStack %{service} API service
 Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description api
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-This package contains the %{project} interface daemon.
+This package contains the %{service} interface daemon.
 
 
 %package taskmanager
-Summary:          OpenStack %{project} taskmanager service
+Summary:          OpenStack %{service} taskmanager service
 Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description taskmanager
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-This package contains the %{project} taskmanager service.
+This package contains the %{service} taskmanager service.
 
 
 %package conductor
-Summary:          OpenStack %{project} conductor service
+Summary:          OpenStack %{service} conductor service
 Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description conductor
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-This package contains the %{project} conductor service.
+This package contains the %{service} conductor service.
 
 
 %package guestagent
-Summary:          OpenStack %{project} guest agent
+Summary:          OpenStack %{service} guest agent
 %if 0%{?rhel}
 Requires:         pexpect
 %else
@@ -105,30 +101,31 @@ Requires:         python-netifaces
 Requires:         %{name}-common = %{epoch}:%{version}-%{release}
 
 %description guestagent
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-This package contains the %{project} guest agent service
+This package contains the %{service} guest agent service
 that runs within the database VM instance.
 
 
-%package -n       python-%{project}
-Summary:          Python libraries for %{project}
+%package -n       python-%{service}
+Summary:          Python libraries for %{service}
 
 Requires:         MySQL-python
 
-Requires:         python-qpid
 Requires:         python-kombu
 
 Requires:         python-eventlet
-Requires:         python-greenlet
 Requires:         python-iso8601
 Requires:         python-netaddr
 Requires:         python-lxml
+Requires:         python-six
+Requires:         python-stevedore
 
 Requires:         python-webob >= 1.2
 Requires:         python-migrate
 
 Requires:         python-sqlalchemy
+Requires:         python-paste
 Requires:         python-paste-deploy
 Requires:         python-routes
 
@@ -138,10 +135,20 @@ Requires:         python-cinderclient
 Requires:         python-heatclient
 Requires:         python-swiftclient
 Requires:         python-keystoneclient >= 0.4.1
+Requires:         python-keystonemiddleware
+Requires:         python-designateclient
+Requires:         python-neutronclient
 
 Requires:         python-oslo-config >= 1:1.2.1
 Requires:         python-oslo-concurrency
 Requires:         python-oslo-messaging
+Requires:         python-oslo-context
+Requires:         python-oslo-i18n
+Requires:         python-oslo-serialization
+Requires:         python-oslo-service
+Requires:         python-oslo-utils
+Requires:         python-oslo-log
+
 Requires:         python-osprofiler
 Requires:         python-jsonschema
 Requires:         python-babel
@@ -150,39 +157,34 @@ Requires:         python-jinja2
 Requires:         python-httplib2
 Requires:         python-passlib
 
+%description -n   python-%{service}
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-%description -n   python-%{project}
-OpenStack DBaaS (codename %{project}) provisioning service.
+This package contains the %{service} python library.
 
-This package contains the %{project} python library.
-
-%package -n python-%{project}-tests
+%package -n python-%{service}-tests
 Summary:        Trove tests
-Requires:       python-%{project} = %{epoch}:%{version}-%{release}
+Requires:       python-%{service} = %{epoch}:%{version}-%{release}
 
-%description -n python-%{project}-tests
+%description -n python-%{service}-tests
 This package contains the Trove test files
 
 %if 0%{?with_doc}
 %package doc
-Summary:          Documentation for OpenStack %{project}
+Summary:          Documentation for OpenStack %{service}
 
 
 %description      doc
-OpenStack DBaaS (codename %{project}) provisioning service.
+OpenStack DBaaS (codename %{service}) provisioning service.
 
-This package contains documentation files for %{project}.
+This package contains documentation files for %{service}.
 %endif
 
 %prep
-%autosetup -n %{project}-%{upstream_version} -S git
-
-sed -i s/REDHATTROVEVERSION/%{version}/ trove/__init__.py
-sed -i s/REDHATTROVERELEASE/%{release}/ trove/__init__.py
-
+%autosetup -n %{service}-%{upstream_version} -S git
 
 # Avoid non-executable-script rpmlint while maintaining timestamps
-find %{project} -name \*.py |
+find %{service} -name \*.py |
 while read source; do
   if head -n1 "$source" | grep -F '/usr/bin/env'; then
     touch --ref="$source" "$source".ts
@@ -192,31 +194,12 @@ while read source; do
   fi
 done
 
-sed -i 's/REDHATVERSION/%{version}/; s/REDHATRELEASE/%{release}/' %{project}/version.py
-
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt
 
 %build
 %{__python2} setup.py build
-
-# Programmatically update defaults in sample config
-# which is installed at /etc/trove/trove.conf
-
-#  First we ensure all values are commented in appropriate format.
-#  Since icehouse, there was an uncommented keystone_authtoken section
-#  at the end of the file which mimics but also conflicted with our
-#  distro editing that had been done for many releases.
-sed -i '/^[^#[]/{s/^/#/; s/ //g}; /^#[^ ]/s/ = /=/' etc/%{project}/%{project}.conf.sample
-
-#  TODO: Make this more robust
-#  Note it only edits the first occurrence, so assumes a section ordering in sample
-#  and also doesn't support multi-valued variables like dhcpbridge_flagfile.
-while read name eq value; do
-  test "$name" && test "$value" || continue
-  sed -i "0,/^# *$name=/{s!^# *$name=.*!#$name=$value!}" etc/%{project}/%{project}.conf.sample
-done < %{SOURCE1}
 
 %install
 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
@@ -245,19 +228,21 @@ popd
 %if 0%{?rhel} != 6
 install -d -m 755 %{buildroot}%{_unitdir}
 %endif
-install -d -m 755 %{buildroot}%{_datadir}/%{project}
-install -d -m 755 %{buildroot}%{_sharedstatedir}/%{project}
-install -d -m 750 %{buildroot}%{_localstatedir}/log/%{project}
+install -d -m 755 %{buildroot}%{_datadir}/%{service}
+install -d -m 755 %{buildroot}%{_sharedstatedir}/%{service}
+install -d -m 750 %{buildroot}%{_localstatedir}/log/%{service}
 
 # Install config files
-install -p -D -m 644 %{SOURCE1} %{buildroot}%{_datadir}/%{project}/%{project}-dist.conf
-install -p -D -m 644 etc/%{project}/api-paste.ini %{buildroot}%{_datadir}/%{project}/%{project}-dist-paste.ini
-install -d -m 755 %{buildroot}%{_sysconfdir}/%{project}
-install -p -D -m 640 etc/%{project}/%{project}.conf.sample %{buildroot}%{_sysconfdir}/%{project}/%{project}.conf
-install -p -D -m 640 etc/%{project}/trove-taskmanager.conf.sample %{buildroot}%{_sysconfdir}/%{project}/trove-taskmanager.conf
-install -p -D -m 640 etc/%{project}/trove-conductor.conf.sample %{buildroot}%{_sysconfdir}/%{project}/trove-conductor.conf
-install -p -D -m 640 etc/%{project}/trove-guestagent.conf.sample %{buildroot}%{_sysconfdir}/%{project}/trove-guestagent.conf
-install -p -D -m 640 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{project}/guest_info
+install -p -D -m 640 etc/%{service}/%{service}.conf.sample %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf
+# Use crudini to set some configuration keys
+crudini --set %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf database connection mysql://trove:trove@localhost/trove
+crudini --set %{buildroot}%{_sysconfdir}/%{service}/%{service}.conf DEFAULT log_file %{_localstatedir}/log/%{service}/%{service}.log
+install -p -D -m 644 etc/%{service}/api-paste.ini %{buildroot}%{_sysconfdir}/%{service}/api-paste.ini
+install -d -m 755 %{buildroot}%{_sysconfdir}/%{service}
+install -p -D -m 640 etc/%{service}/trove-taskmanager.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-taskmanager.conf
+install -p -D -m 640 etc/%{service}/trove-conductor.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-conductor.conf
+install -p -D -m 640 etc/%{service}/trove-guestagent.conf.sample %{buildroot}%{_sysconfdir}/%{service}/trove-guestagent.conf
+install -p -D -m 640 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{service}/guest_info
 
 # Install initscripts
 %if 0%{?rhel} == 6
@@ -265,23 +250,23 @@ install -p -D -m 755 %{SOURCE20} %{buildroot}%{_initrddir}/%{name}-api
 install -p -D -m 755 %{SOURCE21} %{buildroot}%{_initrddir}/%{name}-taskmanager
 install -p -D -m 755 %{SOURCE22} %{buildroot}%{_initrddir}/%{name}-conductor
 install -p -D -m 755 %{SOURCE23} %{buildroot}%{_initrddir}/%{name}-guestagent
-install -p -m 755 %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{buildroot}%{_datadir}/%{project}
+install -p -m 755 %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{buildroot}%{_datadir}/%{service}
 %else
 install -p -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{buildroot}%{_unitdir}
 %endif
 
 # Install logrotate
-install -p -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -p -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 # Install pid directory
-install -d -m 755 %{buildroot}%{_localstatedir}/run/%{project}
+install -d -m 755 %{buildroot}%{_localstatedir}/run/%{service}
 
 # Remove unneeded in production stuff
 rm -fr %{buildroot}%{_bindir}/trove-fake-mode
 rm -fr %{buildroot}%{python_sitelib}/run_tests.*
 %pre common
 # Origin: http://fedoraproject.org/wiki/Packaging:UsersAndGroups#Dynamic_allocation
-USERNAME=%{project}
+USERNAME=%{service}
 GROUPNAME=$USERNAME
 HOMEDIR=%{_sharedstatedir}/$USERNAME
 getent group $GROUPNAME >/dev/null || groupadd -r $GROUPNAME
@@ -323,50 +308,51 @@ exit 0
 
 %files common
 %license LICENSE
-%dir %{_sysconfdir}/%{project}
-%config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}.conf
+%dir %{_sysconfdir}/%{service}
+%config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/%{service}.conf
+%attr(0640, root, %{service}) %{_sysconfdir}/%{service}/api-paste.ini
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 
-%dir %attr(0750, %{project}, root) %{_localstatedir}/log/%{project}
-%dir %attr(0755, %{project}, root) %{_localstatedir}/run/%{project}
+%dir %attr(0750, %{service}, root) %{_localstatedir}/log/%{service}
+%dir %attr(0755, %{service}, root) %{_localstatedir}/run/%{service}
 
-%{_bindir}/%{project}-manage
+%{_bindir}/%{service}-manage
 %{_bindir}/trove-mgmt-taskmanager
 
-%{_datarootdir}/%{project}
+%{_datarootdir}/%{service}
 
-%defattr(-, %{project}, %{project}, -)
-%dir %{_sharedstatedir}/%{project}
+%defattr(-, %{service}, %{service}, -)
+%dir %{_sharedstatedir}/%{service}
 
 %files api
-%{_bindir}/%{project}-api
+%{_bindir}/%{service}-api
 %{_unitdir}/%{name}-api.service
 
 %files taskmanager
-%{_bindir}/%{project}-taskmanager
+%{_bindir}/%{service}-taskmanager
 %{_unitdir}/%{name}-taskmanager.service
-%config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-taskmanager.conf
+%config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/%{service}-taskmanager.conf
 
 %files conductor
-%{_bindir}/%{project}-conductor
+%{_bindir}/%{service}-conductor
 %{_unitdir}/%{name}-conductor.service
-%config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-conductor.conf
+%config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/%{service}-conductor.conf
 
 %files guestagent
-%{_bindir}/%{project}-guestagent
+%{_bindir}/%{service}-guestagent
 %{_unitdir}/%{name}-guestagent.service
-%config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/%{project}-guestagent.conf
-%config(noreplace) %attr(0640, root, %{project}) %{_sysconfdir}/%{project}/guest_info
+%config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/%{service}-guestagent.conf
+%config(noreplace) %attr(0640, root, %{service}) %{_sysconfdir}/%{service}/guest_info
 
-%files -n python-%{project}
+%files -n python-%{service}
 %license LICENSE
-%{python_sitelib}/%{project}
-%{python_sitelib}/%{project}-%{version}*.egg-info
-%exclude %{python2_sitelib}/%{project}/tests
+%{python2_sitelib}/%{service}
+%{python2_sitelib}/%{service}-%{version}*.egg-info
+%exclude %{python2_sitelib}/%{service}/tests
 
-%files -n python-%{project}-tests
+%files -n python-%{service}-tests
 %license LICENSE
-%{python2_sitelib}/%{project}/tests
+%{python2_sitelib}/%{service}/tests
 
 %if 0%{?with_doc}
 %files doc
