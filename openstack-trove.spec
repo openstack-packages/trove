@@ -1,4 +1,3 @@
-%define milestone .0rc2
 %global release_name mitaka
 %global service trove
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
@@ -8,7 +7,7 @@
 Name:             openstack-%{service}
 Epoch:            1
 Version:          5.0.0
-Release:          0.2%{?milestone}%{?dist}
+Release:          1%{?milestone}%{?dist}
 Summary:          OpenStack DBaaS (%{service})
 
 License:          ASL 2.0
@@ -365,6 +364,9 @@ exit 0
 %endif
 
 %changelog
+* Thu Apr 07 2016 Alan Pevec <apevec AT redhat.com> 5.0.0-1
+- Update to 5.0.0 GA
+
 * Fri Apr 01 2016 Alan Pevec <apevec AT redhat.com> 5.0.0-0.2.0rc2
 - RC2 Mitaka
 - Fixes migrations for MySQL 5.6.* and MariaDB 10.1.* LP#1473226
