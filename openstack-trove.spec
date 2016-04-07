@@ -25,7 +25,7 @@ Source13:         %{name}-guestagent.service
 BuildArch:        noarch
 BuildRequires:    python2-devel
 BuildRequires:    python-setuptools
-BuildRequires:    python-pbr
+BuildRequires:    python-pbr >= 1.8
 BuildRequires:    python-d2to1
 BuildRequires:    python-sphinx
 BuildRequires:    crudini
@@ -50,7 +50,7 @@ Requires(postun): systemd
 BuildRequires:    systemd
 
 Requires(pre):    shadow-utils
-Requires:         python-pbr
+Requires:         python-pbr >= 1.8
 
 %description common
 OpenStack DBaaS (codename %{service}) provisioning service.
@@ -118,38 +118,40 @@ Requires:         python-eventlet
 Requires:         python-iso8601
 Requires:         python-netaddr
 Requires:         python-lxml
-Requires:         python-six
-Requires:         python-stevedore
+Requires:         python-six >= 1.9.0
+Requires:         python-stevedore >= 1.5.0
 
-Requires:         python-webob >= 1.2
-Requires:         python-migrate
+Requires:         python-webob >= 1.2.3
+Requires:         python-migrate >= 0.9.6
 
-Requires:         python-sqlalchemy
+Requires:         python-sqlalchemy >= 1.0.10
 Requires:         python-paste
 Requires:         python-paste-deploy
 Requires:         python-routes
 
 Requires:         python-troveclient
-Requires:         python-novaclient
-Requires:         python-cinderclient
-Requires:         python-heatclient
-Requires:         python-swiftclient
-Requires:         python-keystoneclient >= 0.4.1
-Requires:         python-keystonemiddleware
-Requires:         python-designateclient
-Requires:         python-neutronclient
+Requires:         python-cinderclient >= 1.6.0
+Requires:         python-designateclient >= 2.0.0
+Requires:         python-heatclient >= 1.0.0
+Requires:         python-keystoneclient >= 1:2.3.1
+Requires:         python-keystonemiddleware >= 4.3.0
+Requires:         python-neutronclient >= 4.1.1
+Requires:         python-novaclient >= 3.3.0
+Requires:         python-swiftclient >= 3.0.0
 
-Requires:         python-oslo-config >= 1:1.2.1
-Requires:         python-oslo-concurrency
-Requires:         python-oslo-messaging
-Requires:         python-oslo-context
-Requires:         python-oslo-i18n
-Requires:         python-oslo-serialization
-Requires:         python-oslo-service
-Requires:         python-oslo-utils
-Requires:         python-oslo-log
+Requires:         python-oslo-concurrency >= 3.6.0
+Requires:         python-oslo-config >= 2:3.9.0
+Requires:         python-oslo-context >= 0.2.0
+Requires:         python-oslo-db >= 4.6.0
+Requires:         python-oslo-i18n >= 3.4.0
+Requires:         python-oslo-log >= 3.2.0
+Requires:         python-oslo-messaging >= 4.5.0
+Requires:         python-oslo-middleware >= 3.7.0
+Requires:         python-oslo-serialization >= 2.4.0
+Requires:         python-oslo-service >= 1.7.0
+Requires:         python-oslo-utils >= 3.7.0
 
-Requires:         python-osprofiler
+Requires:         python-osprofiler >= 1.2.0
 Requires:         python-jsonschema
 Requires:         python-babel
 Requires:         python-jinja2
