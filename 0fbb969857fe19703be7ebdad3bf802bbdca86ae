@@ -34,6 +34,24 @@
       "revId": "0fbb969857fe19703be7ebdad3bf802bbdca86ae",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_b7820cff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000935
+      },
+      "writtenOn": "2016-04-14T09:40:57Z",
+      "side": 1,
+      "message": "ok, I\u0027ll \"backport\" that cleanup modulo new dep to rpm-kilo then.",
+      "parentUuid": "baa041b7_179d3865",
+      "revId": "0fbb969857fe19703be7ebdad3bf802bbdca86ae",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
