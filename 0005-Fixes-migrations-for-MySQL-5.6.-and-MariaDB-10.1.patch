@@ -1,0 +1,106 @@
+From 686da9501f5d68af46b91f754d4a6712e577b207 Mon Sep 17 00:00:00 2001
+From: Victoria Martinez de la Cruz <victoria@redhat.com>
+Date: Wed, 30 Mar 2016 15:05:59 -0300
+Subject: [PATCH] Fixes migrations for MySQL 5.6.* and MariaDB 10.1.*
+
+In MySQL 5.6/MariaDB 10.1 and later versions there was a change
+on the restrictions over foreign keys (FK).
+
+In 019-datastore-fix.py, we attempt to change a column that is part
+of a FK from NULL to not NULL. This sort of modifications are not
+longer allowed.
+
+This situation caused trove-manage db_sync and trove-manage db_migrate
+to fail.
+
+To workaround this, the FK check before executing the ALTER query
+is disabled and then reenabled.
+
+Change-Id: I666d01235f2c3225aca3fe7520ebdf6d53831cab
+Closes-Bug: #1473226
+(cherry picked from commit 679e2283ecc888bd567955b4bf431c87043e8d12)
+---
+ .../migrate_repo/versions/019_datastore_fix.py     | 23 +++++++++++++++++++---
+ trove/db/sqlalchemy/utils.py                       | 15 ++++++++++++++
+ 2 files changed, 35 insertions(+), 3 deletions(-)
+
+diff --git a/trove/db/sqlalchemy/migrate_repo/versions/019_datastore_fix.py b/trove/db/sqlalchemy/migrate_repo/versions/019_datastore_fix.py
+index 1b51ee9..dab329a 100644
+--- a/trove/db/sqlalchemy/migrate_repo/versions/019_datastore_fix.py
++++ b/trove/db/sqlalchemy/migrate_repo/versions/019_datastore_fix.py
+@@ -20,6 +20,7 @@ from sqlalchemy.sql.expression import update
+ 
+ from trove.common import cfg
+ from trove.db.sqlalchemy.migrate_repo.schema import Table
++from trove.db.sqlalchemy import utils as db_utils
+ 
+ CONF = cfg.CONF
+ LEGACY_IMAGE_ID = "00000000-0000-0000-0000-000000000000"
+@@ -89,6 +90,9 @@ def upgrade(migrate_engine):
+     meta.bind = migrate_engine
+ 
+     instance_table = Table('instances', meta, autoload=True)
++    datastore_versions_table = Table('datastore_versions',
++                                     meta,
++                                     autoload=True)
+ 
+     if has_instances_wo_datastore_version(instance_table):
+         instances = find_all_instances_wo_datastore_version(instance_table)
+@@ -97,9 +101,6 @@ def upgrade(migrate_engine):
+         datastores_table = Table('datastores',
+                                  meta,
+                                  autoload=True)
+-        datastore_versions_table = Table('datastore_versions',
+-                                         meta,
+-                                         autoload=True)
+ 
+         version_id = create_legacy_version(datastores_table,
+                                            datastore_versions_table,
+@@ -111,8 +112,24 @@ def upgrade(migrate_engine):
+                 values=dict(datastore_version_id=version_id)
+             ).execute()
+ 
++    constraint_names = db_utils.get_foreign_key_constraint_names(
++        engine=migrate_engine,
++        table='instances',
++        columns=['datastore_version_id'],
++        ref_table='datastore_versions',
++        ref_columns=['id'])
++    db_utils.drop_foreign_key_constraints(
++        constraint_names=constraint_names,
++        columns=[instance_table.c.datastore_version_id],
++        ref_columns=[datastore_versions_table.c.id])
++
+     instance_table.c.datastore_version_id.alter(nullable=False)
+ 
++    db_utils.create_foreign_key_constraints(
++        constraint_names=constraint_names,
++        columns=[instance_table.c.datastore_version_id],
++        ref_columns=[datastore_versions_table.c.id])
++
+ 
+ def downgrade(migrate_engine):
+     meta.bind = migrate_engine
+diff --git a/trove/db/sqlalchemy/utils.py b/trove/db/sqlalchemy/utils.py
+index ba5ed2e..b7079d1 100644
+--- a/trove/db/sqlalchemy/utils.py
++++ b/trove/db/sqlalchemy/utils.py
+@@ -52,3 +52,18 @@ def drop_foreign_key_constraints(constraint_names, columns,
+                                                refcolumns=ref_columns,
+                                                name=constraint_name)
+         fkey_constraint.drop()
++
++
++def create_foreign_key_constraints(constraint_names, columns,
++                                   ref_columns):
++    """Create the foreign key constraints that match the given
++    criteria.
++    :param constraint_names: List of foreign key constraint names
++    :param columns: List of the foreign key columns.
++    :param ref_columns: List of the referenced columns.
++    """
++    for constraint_name in constraint_names:
++        fkey_constraint = ForeignKeyConstraint(columns=columns,
++                                               refcolumns=ref_columns,
++                                               name=constraint_name)
++        fkey_constraint.create()

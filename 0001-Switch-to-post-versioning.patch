@@ -1,0 +1,29 @@
+From 768bdc2a7b758be4727caad4bbfac0e3fe80c670 Mon Sep 17 00:00:00 2001
+From: Thierry Carrez <thierry@openstack.org>
+Date: Thu, 15 Oct 2015 10:07:57 +0200
+Subject: [PATCH] Switch to post-versioning
+
+No longer mention next version on setup.cfg on stable branch.
+
+oslo.utils 2.6.0 causing tox test to hang.
+This forces a specific version of oslo.utils *before* the
+requirements are loaded, thus ensuring that 2.6.0 is *not* used.
+(This is a temporary fix until oslo.util pushes a new version.)
+
+Depends-On: Ica981756c67902e7fd7bd07ff76c5b679e8e4e2f
+Change-Id: I97ec9d17b6a611d888ef007575a29c1811f475c9
+---
+ setup.cfg | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/setup.cfg b/setup.cfg
+index 951aa8e..917a028 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -1,6 +1,5 @@
+ [metadata]
+ name = trove
+-version = 4.0.0
+ summary = OpenStack DBaaS
+ description-file =
+     README.rst
