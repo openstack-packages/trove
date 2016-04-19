@@ -1,0 +1,8 @@
+Verified+1: rdo-ci-jenkins <whayutin+rdocijenkins@redhat.com>
+Code-Review+1: Javier Peña <jpena@redhat.com>
+Code-Review+2: Alan Pevec <alan.pevec@redhat.com>
+Submitted-by: Alan Pevec <alan.pevec@redhat.com>
+Submitted-at: Tue, 19 Apr 2016 10:14:47 -0400
+Reviewed-on: https://review.gerrithub.io/271892
+Project: openstack-packages/trove
+Branch: refs/heads/rpm-master
