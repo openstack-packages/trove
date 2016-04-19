@@ -1,0 +1,7 @@
+Verified+1: rdo-ci-jenkins <whayutin+rdocijenkins@redhat.com>
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Submitted-by: Javier Peña <jpena@redhat.com>
+Submitted-at: Tue, 19 Apr 2016 10:23:38 -0400
+Reviewed-on: https://review.gerrithub.io/273484
+Project: openstack-packages/trove
+Branch: refs/heads/rpm-liberty
